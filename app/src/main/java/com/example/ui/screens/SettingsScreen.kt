@@ -579,7 +579,7 @@ fun SettingsScreen(
                 if (showSettingsTelegramDialog) {
                     TelegramJoinDialog(
                         onDismiss = { showSettingsTelegramDialog = false },
-                        telegramUrl = "https://t.me/AnyFilmOfficial"
+                        telegramUrl = "https://t.me/MovieBoxOSSOfficial"
                     )
                 }
 
