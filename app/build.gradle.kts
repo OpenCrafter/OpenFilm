@@ -15,7 +15,7 @@ android {
   compileSdk { version = release(36) { minorApiLevel = 1 } }
 
   defaultConfig {
-    applicationId = "com.anyfilm.app"
+    applicationId = "com.studioas.movieboxoss"
     minSdk = 24
     targetSdk = 36
     versionCode = 7

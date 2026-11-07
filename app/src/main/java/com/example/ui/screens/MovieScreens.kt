@@ -96,7 +96,7 @@ fun downloadVideo(context: android.content.Context, url: String, title: String, 
             // 1. Instant Direct HTTP download (saves in 1-2 seconds)
             kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
                 try {
-                    val anyFilmDir = java.io.File(android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_MOVIES), "AnyFilm")
+                    val anyFilmDir = java.io.File(android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_MOVIES), "MovieBoxOSS")
                     if (!anyFilmDir.exists()) anyFilmDir.mkdirs()
                     val titlePoster = java.io.File(anyFilmDir, "$safeTitle.jpg")
                     val showPoster = if (safeShowName.isNotEmpty() && safeShowName != safeTitle) java.io.File(anyFilmDir, "$safeShowName.jpg") else null
@@ -121,16 +121,16 @@ fun downloadVideo(context: android.content.Context, url: String, title: String, 
                 val posterRequest = android.app.DownloadManager.Request(android.net.Uri.parse(posterUrl))
                 posterRequest.setTitle("$title Poster")
                 posterRequest.setNotificationVisibility(android.app.DownloadManager.Request.VISIBILITY_HIDDEN)
-                posterRequest.setDestinationInExternalPublicDir(android.os.Environment.DIRECTORY_MOVIES, "AnyFilm/$safeTitle.jpg")
+                posterRequest.setDestinationInExternalPublicDir(android.os.Environment.DIRECTORY_MOVIES, "MovieBoxOSS/$safeTitle.jpg")
                 manager.enqueue(posterRequest)
 
                 if (safeShowName.isNotEmpty() && safeShowName != safeTitle) {
-                    val showPosterFile = java.io.File(android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_MOVIES), "AnyFilm/$safeShowName.jpg")
+                    val showPosterFile = java.io.File(android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_MOVIES), "MovieBoxOSS/$safeShowName.jpg")
                     if (!showPosterFile.exists()) {
                         val showPosterRequest = android.app.DownloadManager.Request(android.net.Uri.parse(posterUrl))
                         showPosterRequest.setTitle("$safeShowName Poster")
                         showPosterRequest.setNotificationVisibility(android.app.DownloadManager.Request.VISIBILITY_HIDDEN)
-                        showPosterRequest.setDestinationInExternalPublicDir(android.os.Environment.DIRECTORY_MOVIES, "AnyFilm/$safeShowName.jpg")
+                        showPosterRequest.setDestinationInExternalPublicDir(android.os.Environment.DIRECTORY_MOVIES, "MovieBoxOSS/$safeShowName.jpg")
                         manager.enqueue(showPosterRequest)
                     }
                 }
@@ -142,7 +142,7 @@ fun downloadVideo(context: android.content.Context, url: String, title: String, 
         request.setTitle(title)
         request.setDescription("Downloading...")
         request.setNotificationVisibility(android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-        request.setDestinationInExternalPublicDir(android.os.Environment.DIRECTORY_MOVIES, "AnyFilm/$fileName")
+        request.setDestinationInExternalPublicDir(android.os.Environment.DIRECTORY_MOVIES, "MovieBoxOSS/$fileName")
         manager.enqueue(request)
         if (showToast) {
             android.widget.Toast.makeText(context, "Download started...", android.widget.Toast.LENGTH_SHORT).show()
@@ -350,7 +350,7 @@ fun SplashScreen(
             // Standalone App Logo sitting cleanly on dark background
             androidx.compose.foundation.Image(
                 painter = painterResource(id = R.drawable.ic_popup_logo),
-                contentDescription = "AnyFilm Logo",
+                contentDescription = "MovieBoxOSS Logo",
                 modifier = Modifier.size(110.dp)
             )
 
@@ -589,7 +589,7 @@ fun LockoutScreen(viewModel: MovieViewModel) {
 @Composable
 fun TelegramJoinDialog(
     onDismiss: () -> Unit,
-    telegramUrl: String = "https://t.me/AnyFilmOfficial"
+    telegramUrl: String = "https://t.me/MovieBoxOSSOfficial"
 ) {
     val context = LocalContext.current
 
@@ -619,7 +619,7 @@ fun TelegramJoinDialog(
                 // App Logo sitting cleanly on dark background
                 Image(
                     painter = painterResource(id = R.drawable.ic_popup_logo),
-                    contentDescription = "AnyFilm Logo",
+                    contentDescription = "MovieBoxOSS Logo",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier.size(76.dp)
                 )
@@ -742,7 +742,7 @@ fun ForceUpdateFullScreen(
             // Standalone App Logo sitting cleanly on dark background
             Image(
                 painter = painterResource(id = R.drawable.ic_popup_logo),
-                contentDescription = "AnyFilm",
+                contentDescription = "MovieBoxOSS",
                 modifier = Modifier.size(100.dp)
             )
 
@@ -1299,7 +1299,7 @@ fun MainContent(viewModel: MovieViewModel) {
                     prefs.edit().putLong("last_telegram_prompt_timestamp", System.currentTimeMillis()).apply()
                     showTelegramDialog = false
                 },
-                telegramUrl = "https://t.me/AnyFilmOfficial"
+                telegramUrl = "https://t.me/MovieBoxOSSOfficial"
             )
         }
     }
@@ -4381,7 +4381,7 @@ fun DownloadScreen(viewModel: MovieViewModel) {
                 }
 
                 val baseMovies = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_MOVIES)
-                val primaryDir = java.io.File(baseMovies, "AnyFilm")
+                val primaryDir = java.io.File(baseMovies, "MovieBoxOSS")
                 val legacyDir = java.io.File(baseMovies, "Genga World")
                 val dir = if (primaryDir.exists()) primaryDir else if (legacyDir.exists()) legacyDir else primaryDir
                 val scanned = if (dir.exists() && dir.isDirectory) {
@@ -4456,7 +4456,7 @@ fun DownloadScreen(viewModel: MovieViewModel) {
                         items(activeDownloads) { active ->
                             val anyFilmDir = remember {
                                 val base = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_MOVIES)
-                                val primary = java.io.File(base, "AnyFilm")
+                                val primary = java.io.File(base, "MovieBoxOSS")
                                 if (primary.exists()) primary else java.io.File(base, "Genga World")
                             }
                             val safeActiveTitle = remember(active.title) { active.title.replace(Regex("[^a-zA-Z0-9.-]"), "_") }
@@ -4594,7 +4594,7 @@ fun DownloadScreen(viewModel: MovieViewModel) {
                             val isExpanded = expandedShows.contains(showName)
                             val anyFilmDir = remember {
                                 val base = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_MOVIES)
-                                val primary = java.io.File(base, "AnyFilm")
+                                val primary = java.io.File(base, "MovieBoxOSS")
                                 if (primary.exists()) primary else java.io.File(base, "Genga World")
                             }
                             val safeShowPrefix = remember(showName) { showName.replace(Regex("[^a-zA-Z0-9.-]"), "_") }
@@ -4850,7 +4850,7 @@ fun DownloadScreen(viewModel: MovieViewModel) {
                         modifier = Modifier.padding(top = 2.dp, bottom = 16.dp)
                     )
 
-                    // 1. AnyFilm Internal Player
+                    // 1. MovieBoxOSS Internal Player
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -4866,7 +4866,7 @@ fun DownloadScreen(viewModel: MovieViewModel) {
                         if (appIcon != null) {
                             AsyncImage(
                                 model = appIcon,
-                                contentDescription = "AnyFilm",
+                                contentDescription = "MovieBoxOSS",
                                 modifier = Modifier
                                     .size(46.dp)
                                     .clip(RoundedCornerShape(10.dp)),
@@ -4886,7 +4886,7 @@ fun DownloadScreen(viewModel: MovieViewModel) {
                         Column(modifier = Modifier.weight(1f)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(
-                                    text = "AnyFilm Player",
+                                    text = "MovieBoxOSS Player",
                                     color = TextPrimary,
                                     fontSize = 15.sp,
                                     fontWeight = FontWeight.Bold

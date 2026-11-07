@@ -250,7 +250,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                         val finalUrl = if (targetUrl.contains("jsdelivr")) "$targetUrl?t=${System.currentTimeMillis()}" else targetUrl
                         val request = okhttp3.Request.Builder()
                             .url(finalUrl)
-                            .header("User-Agent", "AnyFilmApp")
+                            .header("User-Agent", "MovieBoxOSSApp")
                             .header("Cache-Control", "no-cache")
                             .build()
 
@@ -362,7 +362,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
                 val request = okhttp3.Request.Builder()
                     .url(downloadUrl)
-                    .header("User-Agent", "AnyFilmApp")
+                    .header("User-Agent", "MovieBoxOSSApp")
                     .build()
 
                 val response = client.newCall(request).execute()
@@ -477,7 +477,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val baseDir = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_MOVIES)
-                val primaryDir = java.io.File(baseDir, "AnyFilm")
+                val primaryDir = java.io.File(baseDir, "MovieBoxOSS")
                 val legacyDir = java.io.File(baseDir, "Genga World")
                 val dir = if (primaryDir.exists()) primaryDir else if (legacyDir.exists()) legacyDir else primaryDir
                 val files = if (dir.exists() && dir.isDirectory) {

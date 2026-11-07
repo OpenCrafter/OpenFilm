@@ -1,6 +1,6 @@
-# AnyFilm
+# MovieBoxOSS
 
-AnyFilm is a premium, modern Android client designed for browsing, discovering, and streaming movies, TV shows, and anime. Built using **Jetpack Compose**, **Material 3**, and **Media3 ExoPlayer**, the client runs a built-in high-performance HTTP server locally on the device to deliver smooth, signed, and ad-free playback experiences.
+MovieBoxOSS is a premium, modern Android client designed for browsing, discovering, and streaming movies, TV shows, and anime. Built using **Jetpack Compose**, **Material 3**, and **Media3 ExoPlayer**, the client runs a built-in high-performance HTTP server locally on the device to deliver smooth, signed, and ad-free playback experiences.
 
 ---
 
@@ -53,12 +53,12 @@ The compiled, signed release package will be located at:
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=solo12345689%2FAnyFilm&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=solo12345689/AnyFilm&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=solo12345689/AnyFilm&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=solo12345689/AnyFilm&type=date&legend=top-left" />
- </picture>
+<a href="https://www.star-history.com/?repos=StudioAs%2FMovieBoxOSS&type=date&legend=top-left">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=StudioAs/MovieBoxOSS&type=date&theme=dark&legend=top-left" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=StudioAs/MovieBoxOSS&type=date&theme=light&legend=top-left" />
+    <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=StudioAs/MovieBoxOSS&type=date&legend=top-left" />
+  </picture>
 </a>
 
 ---
@@ -66,5 +66,5 @@ The compiled, signed release package will be located at:
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).  
-You are free to use, fork, and modify this project, provided that proper credit and copyright notice to the original creator (**solo12345689**) are included in all copies or substantial portions of the software.
+You are free to use, fork, and modify this project, provided that proper credit and copyright notice to the original creator (**StudioAs Inc.**) are included in all copies or substantial portions of the software.
 
