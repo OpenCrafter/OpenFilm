@@ -28,20 +28,19 @@ android {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
   }
 
+  val releaseKeyPath = keystoreProperties.getProperty("storeFile") ?: "release-key.jks"
+  val resolvedReleaseKeyFile = File(releaseKeyPath)
+  val releaseKeyFile = if (resolvedReleaseKeyFile.isAbsolute) resolvedReleaseKeyFile else file(releaseKeyPath)
+  val hasReleaseKey = releaseKeyFile.exists()
+
   signingConfigs {
-    create("release") {
-      val keyStorePath = keystoreProperties.getProperty("storeFile") ?: "release-key.jks"
-      val resolvedFile = File(keyStorePath)
-      storeFile = if (resolvedFile.isAbsolute) resolvedFile else file(keyStorePath)
-      storePassword = keystoreProperties.getProperty("storePassword")
-      keyAlias = keystoreProperties.getProperty("keyAlias")
-      keyPassword = keystoreProperties.getProperty("keyPassword")
-    }
-    create("debugConfig") {
-      storeFile = file("${rootDir}/debug.keystore")
-      storePassword = "android"
-      keyAlias = "androiddebugkey"
-      keyPassword = "android"
+    if (hasReleaseKey) {
+      create("release") {
+        storeFile = releaseKeyFile
+        storePassword = keystoreProperties.getProperty("storePassword")
+        keyAlias = keystoreProperties.getProperty("keyAlias")
+        keyPassword = keystoreProperties.getProperty("keyPassword")
+      }
     }
   }
 
@@ -50,7 +49,11 @@ android {
       isCrunchPngs = false
       isMinifyEnabled = false
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      signingConfig = signingConfigs.getByName("release")
+      signingConfig = if (hasReleaseKey) {
+        signingConfigs.getByName("release")
+      } else {
+        signingConfigs.getByName("debug")
+      }
     }
     debug {
     }
