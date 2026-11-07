@@ -39,7 +39,7 @@ jobs:
         run: ./gradlew assembleRelease
 
       - name: 📤 Upload APK Artifacts
-        uses: actions/upload-artifact@v8
+        uses: actions/upload-artifact@v7
         with:
           name: apk-release-${{ steps.git_info.outputs.short_sha }}
           path: app/build/outputs/apk/release/
