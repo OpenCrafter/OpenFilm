@@ -1,0 +1,89 @@
+name: Build and Send to Telegram
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: 🔨 Build APK
+    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
+    outputs:
+      short_sha: ${{ steps.git_info.outputs.short_sha }}
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v6
+
+      - name: ☕ Set up JDK 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: 🐘 Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: 📝 Get Git Info
+        id: git_info
+        run: |
+          echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: 🔧 Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: 🏗️ Build Release APK
+        run: ./gradlew assembleRelease
+
+      - name: 📤 Upload APK Artifacts
+        uses: actions/upload-artifact@v8
+        with:
+          name: apk-release-${{ steps.git_info.outputs.short_sha }}
+          path: app/build/outputs/apk/release/
+
+  aggregateAndSend:
+    name: 📣 Send APKs to Telegram
+    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
+    needs: build
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v6
+
+      - name: 📥 Download Artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: apk-release-${{ needs.build.outputs.short_sha }}
+          path: ./downloaded-artifact
+
+      - name: 🐍 Set up Python 3
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: 📦 Install Dependencies
+        run: pip install telethon
+
+      - name: 📝 Get Git Commit Info
+        run: |
+          echo "COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+
+      - name: 💾 Restore Telegram session cache
+        uses: actions/cache@v6
+        id: telegram_session_cache
+        with:
+          path: bot_session.session
+          key: telegram-session-${{ runner.os }}-bot_session
+
+      - name: 📨 Send APKs to Telegram
+        env:
+          API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
+          COMMIT_SHA: ${{ needs.build.outputs.short_sha }}
+        run: python scripts/send_to_telegram.py
